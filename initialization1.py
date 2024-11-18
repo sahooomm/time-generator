@@ -16,6 +16,7 @@ connection = mysql.connector.connect(**db_config)
 
 query1 = "select * from mytable"
 query2 = "select * from mytable2"
+query3 = "select * from mytable4"
 
 connection = mysql.connector.connect(**db_config)
 
