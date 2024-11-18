@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Run Time Table</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&display=swap">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Open Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Container */
+        .container {
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 30px;
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            background: -webkit-linear-gradient(#0d6efd, #6610f2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        ul {
+            padding-left: 0;
+            list-style: none;
+        }
+
+        li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        li p {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        /* Checkbox Styles */
+        input[type="checkbox"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+            accent-color: #0d6efd;
+        }
+
+        /* Form Styles */
+        form {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Center the submit button and make it bigger */
+        .submit-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        button[type="submit"] {
+            background-color: #0d6efd;
+            color: #fff;
+            padding: 15px 40px; /* Make the button bigger */
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.3rem; /* Increase the font size */
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0, 153, 255, 0.3);
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        button[type="submit"]:active {
+            background-color: #003d80;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transform: translateY(1px);
+        }
+
+        /* Responsive Design */
+        @media only screen and (max-width: 768px) {
+            .container {
+                margin: 20px auto;
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Add Constraints</h1>
+        <ul>
+            <li>
+                <form class="ajax-form" action="{{ url_for('add_C1') }}" method="POST">
+                    <input type="checkbox" id="constraint1">
+                    <p>Classes of faculty should not clash</p>
+                </form>
+            </li>
+            <li>
+                <form class="ajax-form" action="{{ url_for('add_C2') }}" method="POST">
+                    <input type="checkbox" id="constraint2">
+                    <p>No lab class should clash</p>
+                </form>
+            </li>
+            <li>
+                <form class="ajax-form" action="{{ url_for('add_C3') }}" method="POST">
+                    <input type="checkbox" id="constraint3">
+                    <p>No blank class</p>
+                </form>
+            </li>
+            <li>
+                <form class="ajax-form" action="{{ url_for('add_C4') }}" method="POST">
+                    <input type="checkbox" id="constraint4">
+                    <p>Repeated class</p>
+                </form>
+            </li>
+            <li>
+                <form class="ajax-form" action="{{ url_for('add_C5') }}" method="POST">
+                    <input type="checkbox" id="constraint5">
+                    <p>Lab class should be in second half</p>
+                </form>
+            </li>
+            <li>
+                <form class="ajax-form" action="{{ url_for('add_C6') }}" method="POST">
+                    <input type="checkbox" id="constraint6">
+                    <p>Class after lunch and before lunch should not be the same</p>
+                </form>
+            </li>
+            <li>
+                <form class="ajax-form" action="{{ url_for('add_C7') }}" method="POST">
+                    <input type="checkbox" id="constraint7">
+                    <p>Class hour discontinuity: breakage between two classes</p>
+                </form>
+            </li>
+            <li>
+                <form class="ajax-form" action="{{ url_for('add_C8') }}" method="POST">
+                    <input type="checkbox" id="constraint8">
+                    <p>Try to have at least one 2-hour continuous class of a subject with credit ≥ 3</p>
+                </form>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Center and enlarge the submit button -->
+    <div class="submit-container">
+        <form class="myform" id="constraints-form" action="{{ url_for('run_script3') }}" method="POST">
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            // Fade in the container when the document is ready
+            $('.container').css({ 'opacity': 1, 'transform': 'translateY(0)' });
+        });
+
+        $('.ajax-form').submit(function(event) {
+            event.preventDefault(); // Prevent default form submission
+            var form = $(this);
+        
+            console.log("Form data:", form.serialize()); // Log the form data
+        
+            $.ajax({
+                url: form.attr('action'),
+                type: form.attr('method'),
+                data: form.serialize(),
+                success: function(response) {
+                    console.log("Server Response:", response); // Log the server response
+                    if (response.status === 'success') {
+                        alert(response.message);
+                    } else if (response.status === 'error') {
+                        alert(response.message);
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

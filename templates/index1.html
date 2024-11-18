@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Run Time Table</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600&display=swap">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #4A90E2;
+            --secondary-color: #7B61FF;
+            --background-color: #f9f9f9;
+            --text-color: #333;
+            --border-radius: 10px;
+            --input-background: #fff;
+            --input-border-color: #e1e1e1;
+            --transition-speed: 0.3s;
+        }
+
+        /* Global Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.5;
+        }
+
+        /* Container */
+        .container {
+            max-width: 750px;
+            margin: 40px auto;
+            padding: 40px;
+            background-color: #fff;
+            border-radius: var(--border-radius);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+            transition: all var(--transition-speed) ease;
+        }
+
+        /* Headings */
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: var(--text-color);
+            margin-bottom: 1rem;
+        }
+
+        /* Form Styles */
+        form {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 1rem;
+        }
+
+        .input-group label {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: #555;
+        }
+
+        .input-group input[type="text"],
+        .input-group input[type="submit"],
+        .input-group button {
+            padding: 12px 15px;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--input-border-color);
+            background-color: var(--input-background);
+            font-size: 1rem;
+            transition: border-color var(--transition-speed) ease, background-color var(--transition-speed) ease;
+        }
+
+        .input-group input[type="text"]:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            background-color: #f0f4ff;
+        }
+
+        /* Buttons */
+        .button-primary,
+        .input-group input[type="submit"],
+        button[type="submit"] {
+            /* existing styles */
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color var(--transition-speed), transform var(--transition-speed);
+            box-shadow: 0 5px 15px rgba(74, 144, 226, 0.2);
+        
+            /* added styles to make buttons bigger */
+            padding: 15px 30px; /* adjust padding to increase button size */
+            font-size: 18px; /* increase font size */
+            border-radius: 5px; /* add rounded corners */
+        }
+        
+        .button-primary:hover,
+        input[type="submit"]:hover,
+        button[type="submit"]:hover {
+            background-color: #357ABD;
+        }
+        
+        .button-primary:active,
+        input[type="submit"]:active,
+        button[type="submit"]:active {
+            transform: translateY(2px);
+            background-color: #2E64A2;
+        }
+
+        /* Flexbox Form Layout */
+        .flex-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .flex-row .input-group {
+            flex: 1;
+        }
+
+        /* AJAX Form Animation */
+        .ajax-form {
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Subtle Hover Animations */
+        .container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .flex-row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Faculty Details</h1>
+
+        <!-- Faculty Form -->
+        <form id="add-faculty-form" action="{{ url_for('add_faculty') }}" method="POST">
+        <div class="faculty-details">
+            <div class="flex-row">
+                <div class="input-group">
+                    <label for="id">College ID</label>
+                    <input type="text" name="id" placeholder="Enter College ID">
+                </div>
+                <div class="input-group">
+                    <label for="faculty_name">Faculty Name</label>
+                    <input type="text" name="faculty_name" placeholder="Enter Faculty Name">
+                </div>
+            </div>
+            <div class="flex-row">
+                <div class="input-group">
+                    <label for="visiting">Visiting</label>
+                    <input type="text" name="visiting" placeholder="Yes or No">
+                </div>
+                <div class="input-group">
+                    <label for="faculty_id">Faculty ID</label>
+                    <input type="text" name="faculty_id" placeholder="Enter Faculty ID">
+                </div>
+            </div>
+        </div>
+            <button class="button-primary" type="submit">Add Faculty</button>
+        </form>
+
+        <!-- Delete Form with AJAX -->
+        <form class="ajax-form" action="{{ url_for('delete') }}" method="POST">
+            <button class="button-primary" type="submit">Delete</button>
+        </form>
+    </div>
+
+    <!-- Next Form -->
+    <form class="myform" id="constraints-form" action="{{ url_for('run_script') }}" method="POST" style="text-align: center;">
+        <button class="button-primary" type="submit">Next</button>
+    </form>
+
+    <script>
+
+        $('#add-faculty-form').submit(function(event) {
+            event.preventDefault(); // Prevent default form submission
+            var form = $(this);
+        
+            console.log("Form data:", form.serialize()); // Log the form data
+        
+            $.ajax({
+                url: form.attr('action'),
+                type: form.attr('method'),
+                data: form.serialize(),
+                success: function(response) {
+                    console.log("Server Response:", response); // Log the server response
+                    if (response.status === 'success') {
+                        alert(response.message);
+                        $('#faculty-details input').val(''); // Clear input fields
+                        // You may want to update the faculty table here
+                    } else if (response.status === 'error') {
+                        alert(response.message);
+                    }
+                }
+            });
+        });
+
+
+        $(document).ready(function(){
+            $('.ajax-form').on('submit', function(e){
+                e.preventDefault();
+                var form = $(this);
+                
+                $.ajax({
+                    type: form.attr('method'),
+                    url: form.attr('action'),
+                    data: form.serialize(),
+                    success: function(response) {
+                        alert("Deleted successfully!");
+                    },
+                    error: function(xhr, status, error) {
+                        alert("An error occurred: " + error);
+                    }
+                });
+            });
+
+            // Smooth load animation
+            window.onload = function() {
+                var container = document.querySelector('.container');
+                container.style.opacity = '1';
+                container.style.transform = 'translateY(0)';
+            };
+        });
+    </script>
+
+</body>
+</html>

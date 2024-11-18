@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Run Time Table</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600&display=swap">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #4A90E2;
+            --success-color: #28a745;
+            --background-color: #f9f9f9;
+            --text-color: #333;
+            --input-background: #fff;
+            --input-border-color: #e1e1e1;
+            --transition-speed: 0.3s;
+        }
+
+        /* Global Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Container */
+        .container {
+            max-width: 700px;
+            padding: 40px;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            transition: all var(--transition-speed) ease;
+            position: relative;
+            transform: translateY(30px);
+            opacity: 0;
+        }
+
+        .container.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Headings */
+        h2 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            letter-spacing: 1px;
+            position: relative;
+        }
+
+        h2::before {
+            content: "";
+            width: 60px;
+            height: 3px;
+            background-color: var(--primary-color);
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* Form Styles */
+        form {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 1rem;
+        }
+
+        .input-group input[type="text"] {
+            padding: 12px 15px;
+            border-radius: 10px;
+            border: 1px solid var(--input-border-color);
+            background-color: var(--input-background);
+            font-size: 1rem;
+            transition: border-color var(--transition-speed) ease, background-color var(--transition-speed) ease;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .input-group input[type="text"]:focus {
+            border-color: var(--primary-color);
+            background-color: #f0f4ff;
+            outline: none;
+            box-shadow: 0 0 10px rgba(74, 144, 226, 0.3);
+        }
+
+        /* Buttons */
+        button[type="submit"],
+        input[type="submit"] {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: background-color var(--transition-speed), transform var(--transition-speed);
+            box-shadow: 0 6px 15px rgba(74, 144, 226, 0.3);
+        }
+
+        button[type="submit"]:hover,
+        input[type="submit"]:hover {
+            background-color: #357ABD;
+            transform: translateY(-3px);
+        }
+
+        button[type="submit"]:active,
+        input[type="submit"]:active {
+            background-color: #2E64A2;
+            transform: translateY(1px);
+        }
+
+        /* Next Button */
+        .next-btn {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .next-btn button {
+            background-color: var(--success-color);
+        }
+
+        .next-btn button:hover {
+            background-color: #218838;
+        }
+
+        .next-btn button:active {
+            transform: translateY(1px);
+            background-color: #1E7E34;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <form id="add-Course-form" action="{{ url_for('add_Course') }}" method="POST">
+            <h2>Course Details</h2>
+            <div id="Course-details">
+                <div class="input-group">
+                    <input type="text" name="id1" placeholder="Course Id">
+                </div>
+                <div class="input-group">
+                    <input type="text" name="coursename" placeholder="Course Name">
+                </div>
+                <div class="input-group">
+                    <input type="text" name="coursecode" placeholder="Course Code">
+                </div>
+                <div class="input-group">
+                    <input type="text" name="sem" placeholder="Semester">
+                </div>
+                <div class="input-group">
+                    <input type="text" name="facultyid" placeholder="Faculty Id">
+                </div>
+                <div class="input-group">
+                    <input type="text" name="nocw" placeholder="NOCW">
+                </div>
+                <div class="input-group">
+                    <input type="text" name="type" placeholder="Type">
+                </div>
+                <button class="add-btn" type="submit">Add</button>
+            </div>
+        </form>
+
+        <!-- Next Button in Bottom of Container -->
+        <div class="next-btn">
+            <form id="constraints-form" action="{{ url_for('run_script1') }}" method="POST">
+                <button type="submit">Next</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        $('#add-Course-form').submit(function(event) {
+            event.preventDefault(); // Prevent default form submission
+            var form = $(this);
+        
+            console.log("Form data:", form.serialize()); // Log the form data
+        
+            $.ajax({
+                url: form.attr('action'),
+                type: form.attr('method'),
+                data: form.serialize(),
+                success: function(response) {
+                    console.log("Server Response:", response); // Log the server response
+                    if (response.status === 'success') {
+                        alert(response.message);
+                        $('#Course-details input').val(''); // Clear input fields
+                        // You may want to update the faculty table here
+                    } else if (response.status === 'error') {
+                        alert(response.message);
+                    }
+                }
+            });
+        });
+        // Show container with animation
+
+
+
+        $(document).ready(function(){
+            $(".container").addClass("show");
+        });
+    </script>
+
+</body>
+</html>
